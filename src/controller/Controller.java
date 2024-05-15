@@ -4,6 +4,7 @@ import DTOs.IntegrationDTO;
 import DTOs.SaleDTO;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
+import integration.NoMatchingItemException;
 import integration.RegisterHandler;
 import model.Sale;
 
@@ -37,8 +38,12 @@ public class Controller {
     /**
      * Scans an item, forwards the request to be handled at an appropriate level.
      */
-    public SaleDTO scanItem(String ID){
-        return sale.checkIdentifier(ID);
+    public SaleDTO scanItem(String ID) throws ScanFailedException{
+        try{
+        return sale.checkIdentifier(ID);}
+        catch (NoMatchingItemException exception){
+            throw new ScanFailedException();
+        }
     }
     /**
      * Signals a sale has ended, returns information about the sale to perform payment

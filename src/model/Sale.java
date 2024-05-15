@@ -37,25 +37,21 @@ public class Sale {
      * @param ID the identifier that is checked
      */
 
-    public SaleDTO checkIdentifier(String ID){
+    public SaleDTO checkIdentifier(String ID) throws NoMatchingItemException{
         if (IDinSale(ID) == true){
             return increaseItemInSale(ID);
         }
         else {
-            if (itemExistsInDB(ID)){
-                return addItemFromDB(ID);
+            return addItemFromDB(ID);
             }
-        }
-    return null;
     }
 
 
-    private SaleDTO addItemFromDB(String ID){
-        try{
+
+    private SaleDTO addItemFromDB(String ID) throws NoMatchingItemException{
         Item itemFromDB = new Item(inventory.getItemDetails(ID));
         updateTotal(itemFromDB.getItem());
-        addItemToSale(itemFromDB);}
-        catch (NoMatchingItemException exception){}
+        addItemToSale(itemFromDB);
         return getSaleInfo();
     }
 
@@ -66,17 +62,7 @@ public class Sale {
             updateTotal(increasedItem.getItem());
             return new SaleDTO(this, increasedItem);
         }
-    
-    private boolean itemExistsInDB(String ID){
-        try{
-        if (inventory.getItemDetails(ID) != null){
-            return true;
-        }
-        else return false;}
-        catch (NoMatchingItemException exception){
-            return false;
-        }
-    }
+
     
     
     private double calculatePrice(ItemDTO product){

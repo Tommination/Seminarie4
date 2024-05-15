@@ -33,7 +33,7 @@ class InventoryHandlerTest {
         try{
             testInstance.getItemDetails(WrongID);}
         catch (NoMatchingItemException exc) {
-            assertTrue( exc.getMessage().contains(WrongID), "Wrong exception message, does not contain ID: " + WrongID);
+            assertTrue(exc.getMessage().contains(WrongID), "Wrong exception message, does not contain ID: " + WrongID);
         }
     }
     @Test

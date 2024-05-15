@@ -2,6 +2,7 @@ package view;
 
 import DTOs.SaleDTO;
 import controller.Controller;
+import controller.ScanFailedException;
 import model.SaleItem;
 
 /**
@@ -22,21 +23,33 @@ public class View {
     public void runFakeExecution(){
         contr.startSale();
         System.out.println("A new sale has been started.");
-        SaleDTO firstAdded = contr.scanItem("1337");
-        System.out.println("Add 1 item with ID: " + firstAdded.getLatestScan().getItem().getID());
-        printScan(firstAdded);
-        SaleDTO secondAdded = contr.scanItem("1337");
-        System.out.println("Add 1 item with ID: " + secondAdded.getLatestScan().getItem().getID());
-        printScan(secondAdded);
-        SaleDTO thirdAdded = contr.scanItem("1111");
-        System.out.println("Add 1 item with ID: " + thirdAdded.getLatestScan().getItem().getID());
-        printScan(thirdAdded);
+        try{scanItem("1337");}
+        catch(ScanFailedException exception){
+            System.out.println(exception.getMessage());
+        }
+        try{scanItem("1337");}
+        catch(ScanFailedException exception){
+            System.out.println(exception.getMessage());
+        }
+        try{scanItem("1111");}
+        catch(ScanFailedException exception){
+            System.out.println(exception.getMessage());
+        }
+        try{scanItem("0000");}
+        catch(ScanFailedException exception){
+            System.out.println(exception.getMessage());
+        }
         printEndedSale(contr.endSale());
         double paymentAmount = 57;
         System.out.println("Customer pays: " + paymentAmount);
         double change = contr.enterPayment(paymentAmount);
         System.out.println("Change to give to customer: " + change);
 
+    }
+    private void scanItem(String ID) throws ScanFailedException {
+        SaleDTO Added = contr.scanItem(ID);
+        System.out.println("Add 1 item with ID: " + Added.getLatestScan().getItem().getID());
+        printScan(Added);
     }
     private void printEndedSale(SaleDTO saleToPrint){
         double cost = saleToPrint.getTotal();

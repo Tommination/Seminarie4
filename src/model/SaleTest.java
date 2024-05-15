@@ -46,8 +46,13 @@ class SaleTest {
 
     }
     private SaleDTO scanItemTimes(int amountOfScans){
+        try{
         for (int i = 0; i < amountOfScans; i++){
             saleInfo = instanceToTest.checkIdentifier(IDToTest);
+        }
+        return saleInfo;
+        }
+        catch (NoMatchingItemException exception){
         }
         return saleInfo;
     }

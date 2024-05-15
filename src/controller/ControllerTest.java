@@ -46,7 +46,7 @@ class ControllerTest {
 
     }
 
-    private SaleDTO scanItemTimes(int amountOfScans) {
+    private SaleDTO scanItemTimes(int amountOfScans) throws ScanFailedException{
         testController.startSale();
         for (int i = 0; i < amountOfScans; i++) {
             saleInfo = testController.scanItem(IDToTest);
@@ -54,8 +54,12 @@ class ControllerTest {
         return saleInfo;
     }
     private SaleDTO performSale(){
+        try{
         saleInfo = scanItemTimes(amountOfScans);
-        return saleInfo;
+        return saleInfo;}
+        catch (ScanFailedException exception){
+            return null;
+        }
     }
 
     @AfterEach
