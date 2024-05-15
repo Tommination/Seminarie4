@@ -3,6 +3,7 @@ package controller;
 import DTOs.SaleDTO;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
+import integration.NoMatchingItemException;
 import integration.RegisterHandler;
 import model.Item;
 import model.Sale;
@@ -31,7 +32,9 @@ class ControllerTest {
         testController.setRegHandl(new RegisterHandler());
         testController.setAccHandl(new AccountingHandler());
         InventoryHandler inv = new InventoryHandler();
-        expectedItem = new Item(inv.getItemDetails("1337"));
+        try{
+        expectedItem = new Item(inv.getItemDetails("1337"));}
+        catch( NoMatchingItemException exception){}
         amountOfScans = 2;
         SaleItem item = new SaleItem(expectedItem, amountOfScans);
         IDToTest = "1337";

@@ -3,6 +3,7 @@ package model;
 import DTOs.IntegrationDTO;
 import DTOs.SaleDTO;
 import integration.InventoryHandler;
+import integration.NoMatchingItemException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,9 @@ class SaleTest {
     @BeforeEach
     void setUp() {
         InventoryHandler inv = new InventoryHandler();
-        expectedItem = new Item (inv.getItemDetails("1337"));
+        try{
+        expectedItem = new Item (inv.getItemDetails("1337"));}
+        catch (NoMatchingItemException exception){}
         amountOfScans = 2;
         SaleItem item = new SaleItem(expectedItem, amountOfScans);
         IDToTest = "1337";

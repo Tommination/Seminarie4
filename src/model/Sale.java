@@ -4,6 +4,7 @@ import DTOs.ItemDTO;
 import DTOs.SaleDTO;
 import DTOs.IntegrationDTO;
 import integration.InventoryHandler;
+import integration.NoMatchingItemException;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Sale {
      * Creates a new instance and records the time at creation.
      * @param inv the inventoryHandler that is used to interact with inventory during a sale.
      */
+
     public Sale(InventoryHandler inv){
         saleTime =  LocalTime.now();
         receipt = new Receipt();
@@ -34,6 +36,7 @@ public class Sale {
      * Checks for an identifier in the sale and if there isnt one passes check to integration layer
      * @param ID the identifier that is checked
      */
+
     public SaleDTO checkIdentifier(String ID){
         if (IDinSale(ID) == true){
             return increaseItemInSale(ID);
@@ -48,9 +51,11 @@ public class Sale {
 
 
     private SaleDTO addItemFromDB(String ID){
+        try{
         Item itemFromDB = new Item(inventory.getItemDetails(ID));
         updateTotal(itemFromDB.getItem());
-        addItemToSale(itemFromDB);
+        addItemToSale(itemFromDB);}
+        catch (NoMatchingItemException exception){}
         return getSaleInfo();
     }
 
@@ -63,10 +68,14 @@ public class Sale {
         }
     
     private boolean itemExistsInDB(String ID){
+        try{
         if (inventory.getItemDetails(ID) != null){
             return true;
         }
-        else return false;
+        else return false;}
+        catch (NoMatchingItemException exception){
+            return false;
+        }
     }
     
     

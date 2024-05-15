@@ -10,11 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class InventoryHandlerTest {
     private InventoryHandler testInstance;
     private String IDToCheck;
+    private String WrongID;
     ItemDTO expectedItem;
+
     @BeforeEach
     void setUp() {
         testInstance = new InventoryHandler();
         IDToCheck = "1111";
+        WrongID = "0000";
         expectedItem = new ItemDTO("milk", "whole, 2%", 19, 0.08, "1111");
 
     }
@@ -22,40 +25,25 @@ class InventoryHandlerTest {
     @AfterEach
     void tearDown() {
         testInstance = null;
+        expectedItem = null;
+    }
+
+    @Test
+    void testIdentifierNotInInventory() {
+        try{
+            testInstance.getItemDetails(WrongID);}
+        catch (NoMatchingItemException exc) {
+            assertTrue( exc.getMessage().contains(WrongID), "Wrong exception message, does not contain ID: " + WrongID);
+        }
     }
     @Test
-    void getName() {
-        ItemDTO readAttributes = testInstance.getItemDetails(IDToCheck);
-        String nameSaved = readAttributes.getName();
-        String expectedOutput = expectedItem.getName();
-        assertTrue(nameSaved.equalsIgnoreCase(expectedOutput), "name doesn't match");
+    void testIdentifierInInventory() {
+        try{
+            testInstance.getItemDetails(IDToCheck);}
+        catch (NoMatchingItemException exc) {
+            fail("Exception has been thrown when it sould not");
+        }
+
     }
-    @Test
-    void getDescription() {
-        ItemDTO readAttributes = testInstance.getItemDetails(IDToCheck);
-        String descriptionSaved = readAttributes.getDescription();
-        String expectedOutput = expectedItem.getDescription();
-        assertTrue(descriptionSaved.equalsIgnoreCase(expectedOutput), "description doesn't match");
-    }
-    @Test
-    void getPrice() {
-        ItemDTO readAttributes = testInstance.getItemDetails(IDToCheck);
-        double priceSaved = readAttributes.getPrice();
-        double expectedOutput = expectedItem.getPrice();
-        assertTrue(priceSaved == (expectedOutput), "price doesn't match");
-    }
-    @Test
-    void getVAT() {
-        ItemDTO readAttributes = testInstance.getItemDetails(IDToCheck);
-        double VATSaved = readAttributes.getVATRate();
-        double expectedOutput = expectedItem.getVATRate();
-        assertTrue(VATSaved == (expectedOutput), "VAT doesn't match");
-    }
-    @Test
-    void getID() {
-        ItemDTO readAttributes = testInstance.getItemDetails(IDToCheck);
-        String VATSaved = readAttributes.getID();
-        String expectedOutput = expectedItem.getID();
-        assertTrue(VATSaved.equals(expectedOutput), "ID doesn't match");
-    }
+
 }

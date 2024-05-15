@@ -31,7 +31,7 @@ public class InventoryHandler {
      * Finds item with matching ID, in reality would check with an actual database
      * @param ID The identifier of a given item in a store
      */
-    public ItemDTO getItemDetails(String ID){
+    public ItemDTO getItemDetails(String ID) throws NoMatchingItemException {
         for (int i = 0; i < dummyInventory.length; i++){
             if (dummyInventory[i].getQuantity() > 0){
                 if (dummyInventory[i].getItemInfo().getID().equals(ID)){
@@ -39,7 +39,7 @@ public class InventoryHandler {
                 }
             }
         }
-        return null;
+        throw new NoMatchingItemException(ID);
     }
 
     /**
