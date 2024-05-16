@@ -3,6 +3,7 @@ package model;
 import DTOs.ItemDTO;
 import DTOs.SaleDTO;
 import DTOs.IntegrationDTO;
+import integration.FailedConnectionException;
 import integration.InventoryHandler;
 import integration.NoMatchingItemException;
 
@@ -37,18 +38,18 @@ public class Sale {
      * @param ID the identifier that is checked
      */
 
-    public SaleDTO checkIdentifier(String ID) throws NoMatchingItemException{
+    public SaleDTO checkIdentifier(String ID) throws NoMatchingItemException, FailedConnectionException{
         if (IDinSale(ID) == true){
             return increaseItemInSale(ID);
         }
         else {
             return addItemFromDB(ID);
             }
-    }
+        }
 
 
 
-    private SaleDTO addItemFromDB(String ID) throws NoMatchingItemException{
+    private SaleDTO addItemFromDB(String ID) throws NoMatchingItemException, FailedConnectionException{
         Item itemFromDB = new Item(inventory.getItemDetails(ID));
         updateTotal(itemFromDB.getItem());
         addItemToSale(itemFromDB);

@@ -5,6 +5,7 @@ import DTOs.SaleDTO;
 import model.ItemInInventory;
 import model.SaleItem;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -30,8 +31,14 @@ public class InventoryHandler {
     /**
      * Finds item with matching ID, in reality would check with an actual database
      * @param ID The identifier of a given item in a store
+     * @throws NoMatchingItemException thrown when there is a request to get information about an item with an ID not in the database
+     * @throws FailedConnectionException Fake network issue, thrown when a certain item code is scanned, also sends time of failiure.
      */
-    public ItemDTO getItemDetails(String ID) throws NoMatchingItemException {
+    public ItemDTO getItemDetails(String ID) throws NoMatchingItemException, FailedConnectionException {
+        if (ID == "0070")
+        {
+            throw new FailedConnectionException(LocalTime.now());
+        }
         for (int i = 0; i < dummyInventory.length; i++){
             if (dummyInventory[i].getQuantity() > 0){
                 if (dummyInventory[i].getItemInfo().getID().equals(ID)){
@@ -43,10 +50,11 @@ public class InventoryHandler {
     }
 
     /**
-     * Method that updates the inventory, would in reality interact with the database
+     * Method that updates the inventory, would in reality interact with the database.
+     * Never throws FailedConnectionException but if this interacted with a real database it could.
      * @param saleInfo information about the sale that has finished
      */
-    public void updateInventory(SaleDTO saleInfo){
+    public void updateInventory(SaleDTO saleInfo) throws FailedConnectionException{
         ArrayList<SaleItem> itemsToUpdate = saleInfo.getItemsInSale();
         for (int i = 0; i < itemsToUpdate.size(); i++){
             double soldItemQuantity = itemsToUpdate.get(i).getQuantity();

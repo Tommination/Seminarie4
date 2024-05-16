@@ -32,12 +32,12 @@ class ControllerTest {
         testController.setRegHandl(new RegisterHandler());
         testController.setAccHandl(new AccountingHandler());
         InventoryHandler inv = new InventoryHandler();
+        IDToTest = "1337";
         try{
-        expectedItem = new Item(inv.getItemDetails("1337"));}
+        expectedItem = new Item(inv.getItemDetails(IDToTest));}
         catch( NoMatchingItemException exception){}
         amountOfScans = 2;
         SaleItem item = new SaleItem(expectedItem, amountOfScans);
-        IDToTest = "1337";
         expectedLastItem = item;
         expectedTotal = (expectedItem.getItem().getPrice() * amountOfScans);
         expectedVAT = ((expectedItem.getItem().getPrice() * expectedItem.getItem().getVATRate() * amountOfScans));
@@ -108,5 +108,4 @@ class ControllerTest {
         assertTrue(expectedChange == receivedChange, "The two changes do not match");
 
     }
-
 }

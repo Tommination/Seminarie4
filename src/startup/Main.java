@@ -1,6 +1,7 @@
 package startup;
 
 import controller.Controller;
+import controller.FileLogger;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
 import integration.RegisterHandler;
@@ -23,6 +24,7 @@ public class Main {
         contr.setInvHandl(inv);
         contr.setAccHandl(acc);
         contr.setRegHandl(reg);
+        contr.setErrorLogger(new FileLogger());
         view.runFakeExecution();
     }
 }

@@ -2,11 +2,10 @@ package controller;
 
 import DTOs.IntegrationDTO;
 import DTOs.SaleDTO;
-import integration.AccountingHandler;
-import integration.InventoryHandler;
-import integration.NoMatchingItemException;
-import integration.RegisterHandler;
+import integration.*;
 import model.Sale;
+
+import java.io.File;
 
 /**
  * This is the Applications controller class, all calls to the
@@ -17,6 +16,11 @@ public class Controller {
     private AccountingHandler acc;
     private RegisterHandler reg;
     private Sale sale;
+    private FileLogger errorLogger;
+
+    public void setErrorLogger(FileLogger errorLogger) {
+        this.errorLogger = errorLogger;
+    }
 
     public void setAccHandl(AccountingHandler acc) {
         this.acc = acc;
@@ -37,11 +41,18 @@ public class Controller {
     }
     /**
      * Scans an item, forwards the request to be handled at an appropriate level.
+     * @param ID The item identifier scanned
+     * @return returns information about the current state of the sale
+     * @throws ScanFailedException Thrown if the scan fails for any reason, reason was deemed irrelevant to the view
      */
     public SaleDTO scanItem(String ID) throws ScanFailedException{
         try{
         return sale.checkIdentifier(ID);}
         catch (NoMatchingItemException exception){
+            throw new ScanFailedException();
+        }
+        catch(FailedConnectionException connectionException){
+            errorLogger.log(connectionException.getMessage());
             throw new ScanFailedException();
         }
     }

@@ -20,24 +20,27 @@ public class View {
     /**
      * Performs a fake sale by calling all the system operations and printing returns to console
      */
+    private void printFailedScan(){
+        System.out.println("Unable to scan item, please try again");
+    }
     public void runFakeExecution(){
         contr.startSale();
         System.out.println("A new sale has been started.");
         try{scanItem("1337");}
         catch(ScanFailedException exception){
-            System.out.println(exception.getMessage());
+            printFailedScan();
         }
         try{scanItem("1337");}
         catch(ScanFailedException exception){
-            System.out.println(exception.getMessage());
+            printFailedScan();
         }
         try{scanItem("1111");}
         catch(ScanFailedException exception){
-            System.out.println(exception.getMessage());
+            printFailedScan();
         }
         try{scanItem("0000");}
         catch(ScanFailedException exception){
-            System.out.println(exception.getMessage());
+            printFailedScan();
         }
         printEndedSale(contr.endSale());
         double paymentAmount = 57;
