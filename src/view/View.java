@@ -42,6 +42,11 @@ public class View {
         catch(ScanFailedException exception){
             printFailedScan();
         }
+        try{scanItem("0070");}
+        catch(ScanFailedException exception){
+        printFailedScan();
+        }
+
         printEndedSale(contr.endSale());
         double paymentAmount = 57;
         System.out.println("Customer pays: " + paymentAmount);
