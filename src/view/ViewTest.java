@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import controller.FileLogger;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
 import integration.RegisterHandler;
@@ -28,6 +29,7 @@ class ViewTest {
         contr.setInvHandl(inv);
         contr.setAccHandl(acc);
         contr.setRegHandl(reg);
+        contr.setErrorLogger(new FileLogger("PointOfSaleErrorLog.txt"));
 
         printoutBuffer = new ByteArrayOutputStream();
         PrintStream inMemSysOut = new PrintStream(printoutBuffer);

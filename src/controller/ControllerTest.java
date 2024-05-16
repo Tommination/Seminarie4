@@ -46,7 +46,7 @@ class ControllerTest {
 
     }
 
-    private SaleDTO scanItemTimes(int amountOfScans) throws ScanFailedException{
+    private SaleDTO scanItemTimes(int amountOfScans) throws ScanFailedException, NoMatchingItemException{
         testController.startSale();
         for (int i = 0; i < amountOfScans; i++) {
             saleInfo = testController.scanItem(IDToTest);
@@ -58,6 +58,9 @@ class ControllerTest {
         saleInfo = scanItemTimes(amountOfScans);
         return saleInfo;}
         catch (ScanFailedException exception){
+            return null;
+        }
+        catch (NoMatchingItemException exception){
             return null;
         }
     }

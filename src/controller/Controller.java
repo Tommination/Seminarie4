@@ -45,11 +45,9 @@ public class Controller {
      * @return returns information about the current state of the sale
      * @throws ScanFailedException Thrown if the scan fails for any reason, reason was deemed irrelevant to the view
      */
-    public SaleDTO scanItem(String ID) throws ScanFailedException{
+    public SaleDTO scanItem(String ID) throws ScanFailedException, NoMatchingItemException{
         try{
-        return sale.checkIdentifier(ID);}
-        catch (NoMatchingItemException exception){
-            throw new ScanFailedException();
+        return sale.checkIdentifier(ID);
         }
         catch(FailedConnectionException connectionException){
             errorLogger.log(connectionException.getMessage());

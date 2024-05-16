@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Sale {
     private InventoryHandler inventory;
     private ArrayList<SaleItem> itemsInSale;
+    private ArrayList<TotalRevenueObserver> revenueObservers = new ArrayList<>();
     private LocalTime saleTime;
     private Receipt receipt;
     private double totalCost = 0;
@@ -119,7 +120,15 @@ public class Sale {
         comms.getInv().updateInventory(thisSale);
         Payment saleFinalPayment = new Payment(thisSale, paidAmount);
         printReceipt(saleFinalPayment);
+        notifyObservers();
         return comms.getReg().updateRegister(saleFinalPayment);
+
+    }
+
+    private void notifyObservers(){
+        for(TotalRevenueObserver obs: revenueObservers){
+            obs.revenueStateChanged(getSaleInfo());
+        }
     }
 
     /**

@@ -3,6 +3,7 @@ package view;
 import DTOs.SaleDTO;
 import controller.Controller;
 import controller.ScanFailedException;
+import integration.NoMatchingItemException;
 import model.SaleItem;
 
 /**
@@ -17,35 +18,24 @@ public class View {
     public View(Controller contr){
         this.contr = contr;
     }
-    /**
-     * Performs a fake sale by calling all the system operations and printing returns to console
-     */
+
     private void printFailedScan(){
         System.out.println("Unable to scan item, please try again");
     }
+    private void printwrongID(String ID){
+        System.out.println("Unable to scan item with ID: " + ID + ", try entering ID manually");
+    }
+    /**
+     * Performs a fake sale by calling all the system operations and printing returns to console
+     */
     public void runFakeExecution(){
         contr.startSale();
         System.out.println("A new sale has been started.");
-        try{scanItem("1337");}
-        catch(ScanFailedException exception){
-            printFailedScan();
-        }
-        try{scanItem("1337");}
-        catch(ScanFailedException exception){
-            printFailedScan();
-        }
-        try{scanItem("1111");}
-        catch(ScanFailedException exception){
-            printFailedScan();
-        }
-        try{scanItem("0000");}
-        catch(ScanFailedException exception){
-            printFailedScan();
-        }
-        try{scanItem("0070");}
-        catch(ScanFailedException exception){
-        printFailedScan();
-        }
+        scanItem("1337");
+        scanItem("1337");
+        scanItem("1111");
+        scanItem("0000");
+        scanItem("0070");
 
         printEndedSale(contr.endSale());
         double paymentAmount = 57;
@@ -54,10 +44,17 @@ public class View {
         System.out.println("Change to give to customer: " + change);
 
     }
-    private void scanItem(String ID) throws ScanFailedException {
+    private void scanItem(String ID){
+        try{
         SaleDTO Added = contr.scanItem(ID);
         System.out.println("Add 1 item with ID: " + Added.getLatestScan().getItem().getID());
-        printScan(Added);
+        printScan(Added);}
+        catch(NoMatchingItemException itemException){
+            printwrongID(itemException.getID());
+        }
+        catch(ScanFailedException scanException){
+            printFailedScan();
+        }
     }
     private void printEndedSale(SaleDTO saleToPrint){
         double cost = saleToPrint.getTotal();

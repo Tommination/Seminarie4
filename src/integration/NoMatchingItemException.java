@@ -11,4 +11,8 @@ public class NoMatchingItemException extends Exception {
         super("Unable to scan item with Identifier: " + ID + " as no such item appears in the inventory database.");
         this.ID = ID;
     }
+
+    public String getID() {
+        return ID;
+    }
 }

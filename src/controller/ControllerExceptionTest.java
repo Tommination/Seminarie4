@@ -2,6 +2,7 @@ package controller;
 
 import integration.AccountingHandler;
 import integration.InventoryHandler;
+import integration.NoMatchingItemException;
 import integration.RegisterHandler;
 import java.io.*;
 import java.nio.file.Files;
@@ -28,7 +29,7 @@ public class ControllerExceptionTest{
         testController.setInvHandl(new InventoryHandler());
         testController.setRegHandl(new RegisterHandler());
         testController.setAccHandl(new AccountingHandler());
-        testController.setErrorLogger(new FileLogger());
+        testController.setErrorLogger(new FileLogger("PointOfSaleErrorLog.txt"));
         IDFailConn = "0070";
         IDNotInDB = "0000";
         timeOfTest = LocalTime.now().truncatedTo(ChronoUnit.SECONDS);
@@ -38,6 +39,8 @@ public class ControllerExceptionTest{
     void tearDown(){
         testController = null;
         IDFailConn = null;
+        IDNotInDB = null;
+        timeOfTest = null;
     }
 
     @Test
@@ -54,6 +57,9 @@ public class ControllerExceptionTest{
                 fail("reading the file went wrong");
             }
         }
+        catch (NoMatchingItemException exc){
+            fail("Wrong type of exception thrown");
+        }
     }
     @Test
     void testWrongID(){
@@ -61,8 +67,12 @@ public class ControllerExceptionTest{
             testController.scanItem(IDNotInDB);
         }
         catch(ScanFailedException exception){
-            assertTrue(exception.getMessage().contains("Scan has failed."));
+            fail("Wrong type of exception thrown.");
             }
+        catch(NoMatchingItemException exception){
+            assertTrue(exception.getMessage().contains(IDNotInDB), "Wrong message returned with exception");
         }
+        }
+
 }
 

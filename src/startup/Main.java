@@ -24,7 +24,7 @@ public class Main {
         contr.setInvHandl(inv);
         contr.setAccHandl(acc);
         contr.setRegHandl(reg);
-        contr.setErrorLogger(new FileLogger());
+        contr.setErrorLogger(new FileLogger("PointOfSaleErrorLog.txt"));
         view.runFakeExecution();
     }
 }

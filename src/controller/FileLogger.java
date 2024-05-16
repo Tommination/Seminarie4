@@ -10,9 +10,9 @@ import java.io.PrintWriter;
 public class FileLogger {
     private PrintWriter logStream;
 
-    public FileLogger(){
+    public FileLogger(String fileName){
         try{
-            logStream = new PrintWriter(new FileWriter("PointOfSalelog.txt"), true);
+            logStream = new PrintWriter(new FileWriter(fileName), true);
             }
             catch (IOException ioe){
                 System.out.println("CAN'T LOG");
