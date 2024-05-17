@@ -4,8 +4,10 @@ import DTOs.IntegrationDTO;
 import DTOs.SaleDTO;
 import integration.*;
 import model.Sale;
+import model.TotalRevenueObserver;
+import util.FileLogger;
 
-import java.io.File;
+import java.util.ArrayList;
 
 /**
  * This is the Applications controller class, all calls to the
@@ -17,6 +19,8 @@ public class Controller {
     private RegisterHandler reg;
     private Sale sale;
     private FileLogger errorLogger;
+
+    private ArrayList<TotalRevenueObserver> revenueObservers = new ArrayList<>();
 
     public void setErrorLogger(FileLogger errorLogger) {
         this.errorLogger = errorLogger;
@@ -33,11 +37,17 @@ public class Controller {
     public void setRegHandl(RegisterHandler reg) {
         this.reg = reg;
     }
+
+    public void addRevenueObserver(TotalRevenueObserver revenueObserver) {
+        revenueObservers.add(revenueObserver);
+    }
+
     /**
      * Starts a new sale, method must be the first called in a sale
      */
     public void startSale(){
         sale = new Sale(inv);
+        sale.addObserver(revenueObservers);
     }
     /**
      * Scans an item, forwards the request to be handled at an appropriate level.

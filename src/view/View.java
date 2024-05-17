@@ -11,12 +11,15 @@ import model.SaleItem;
  */
 public class View {
     private Controller contr;
+    private TotalRevenueView revenueView;
 /**
  * Creates a new instance, uses the specified controller for calls to other layers
  * @param contr The controller that is used for calls to other layers
  */
     public View(Controller contr){
         this.contr = contr;
+        contr.addRevenueObserver(new TotalRevenueView());
+        contr.addRevenueObserver(new TotalRevenueFileOutput());
     }
 
     private void printFailedScan(){
@@ -42,6 +45,19 @@ public class View {
         System.out.println("Customer pays: " + paymentAmount);
         double change = contr.enterPayment(paymentAmount);
         System.out.println("Change to give to customer: " + change);
+        contr.startSale();
+        System.out.println("A new sale has been started.");
+        scanItem("1337");
+        scanItem("1111");
+        scanItem("0000");
+        scanItem("0070");
+
+        printEndedSale(contr.endSale());
+        paymentAmount = 32;
+        System.out.println("Customer pays: " + paymentAmount);
+        change = contr.enterPayment(paymentAmount);
+        System.out.println("Change to give to customer: " + change);
+
 
     }
     private void scanItem(String ID){

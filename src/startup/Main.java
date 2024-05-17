@@ -1,7 +1,7 @@
 package startup;
 
 import controller.Controller;
-import controller.FileLogger;
+import util.FileLogger;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
 import integration.RegisterHandler;
@@ -17,7 +17,6 @@ public class Main {
      */
     public static void main(String[] args) {
         Controller contr = new Controller();
-        View view = new View(contr);
         InventoryHandler inv = new InventoryHandler();
         AccountingHandler acc = new AccountingHandler();
         RegisterHandler reg = new RegisterHandler();
@@ -25,6 +24,7 @@ public class Main {
         contr.setAccHandl(acc);
         contr.setRegHandl(reg);
         contr.setErrorLogger(new FileLogger("PointOfSaleErrorLog.txt"));
+        View view = new View(contr);
         view.runFakeExecution();
     }
 }

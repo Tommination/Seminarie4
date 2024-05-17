@@ -1,4 +1,4 @@
-package controller;
+package util;
 
 import java.io.FileWriter;
 import java.io.IOException;

@@ -1,6 +1,7 @@
 package model;
 
 import DTOs.SaleDTO;
+import util.StoreMath;
 
 import static java.lang.Math.round;
 
@@ -30,13 +31,11 @@ public class Payment {
      * @return
      */
     public double getChange(){
-        return roundTo1Decimal(getPaidAmount()-getTotal());
+        return StoreMath.roundTo1Decimal(getPaidAmount()-getTotal());
     }
     public double getPaidAmount() {
         return paidAmount;
     }
 
-    private double roundTo1Decimal(Double number){
-        return (round(number*10))/10.0;
-    }
+
 }

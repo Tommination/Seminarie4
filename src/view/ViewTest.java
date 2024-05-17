@@ -1,7 +1,7 @@
 package view;
 
 import controller.Controller;
-import controller.FileLogger;
+import util.FileLogger;
 import integration.AccountingHandler;
 import integration.InventoryHandler;
 import integration.RegisterHandler;

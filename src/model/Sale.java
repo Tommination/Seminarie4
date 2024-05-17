@@ -132,6 +132,15 @@ public class Sale {
     }
 
     /**
+     * Adds an observer to the list of observer that are notified when revenue changes (ie. a sale is made)
+     * @param observers The TotalRevenueObserver to add
+     */
+    public void addObserver(ArrayList<TotalRevenueObserver> observers){
+
+        revenueObservers.addAll(observers);
+    }
+
+    /**
      * Returns all information about the sale without altering it.
      * @return SaleDTO with how the sale is currently.
      */
