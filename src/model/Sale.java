@@ -37,6 +37,8 @@ public class Sale {
     /**
      * Checks for an identifier in the sale and if there isnt one passes check to integration layer
      * @param ID the identifier that is checked
+     * @throws NoMatchingItemException Thrown when parameter contains input that does not exist in the database
+     * @throws FailedConnectionException Thrown when connection fails. Currently hardcoded to be when ID is 0070.
      */
 
     public SaleDTO checkIdentifier(String ID) throws NoMatchingItemException, FailedConnectionException{

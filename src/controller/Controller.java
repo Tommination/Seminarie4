@@ -53,7 +53,8 @@ public class Controller {
      * Scans an item, forwards the request to be handled at an appropriate level.
      * @param ID The item identifier scanned
      * @return returns information about the current state of the sale
-     * @throws ScanFailedException Thrown if the scan fails for any reason, reason was deemed irrelevant to the view
+     * @throws ScanFailedException Thrown if the scan fails for any reason deemed irrelevant to the caller
+     * @throws NoMatchingItemException Thrown if theres an input of an item thats not available. Presumed user fault.
      */
     public SaleDTO scanItem(String ID) throws ScanFailedException, NoMatchingItemException{
         try{
